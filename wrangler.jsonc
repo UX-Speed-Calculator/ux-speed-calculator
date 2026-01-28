@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ux-speed-calculator",
+  "account_id": "724e55bcae2b4d037e3e85b1a4716da1",
+  "main": "./.output/server/index.mjs",
+  "compatibility_date": "2026-01-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./.output/public",
+  },
+  "routes": [
+    {
+      "pattern": "calculator.uxspeed.dev",
+      "custom_domain": true,
+    },
+  ],
+}
