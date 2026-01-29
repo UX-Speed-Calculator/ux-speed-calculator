@@ -5,12 +5,10 @@ export default function Step4() {
     <main class="mx-auto p-4 text-center">
       <section class="info-and-canvas grid grid-cols-4 gap-1">
         <section class="col-span-1 flex flex-col">
-          <h1 class="text-[2rem] uppercase">Step 1</h1>
+          <h1 class="text-[2rem] uppercase">Level 4</h1>
           <section class="mt-5">
-            <h2>What Matters to My Business?</h2>
-            <p>
-              Conversion Rate origins: performance, presentation quality, SEO, availability, etc.
-            </p>
+            <h2>Percentile</h2>
+            <p>...</p>
           </section>
         </section>
         <div class="future-canvas col-span-3">
@@ -18,7 +16,20 @@ export default function Step4() {
         </div>
       </section>
 
-      <ControlsGrid />
+      <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
+        <div class="bg-stone-800">
+          <p>Controls 1</p>
+        </div>
+        <div class="bg-stone-800">
+          <p>Controls 2</p>
+        </div>
+        <div class="bg-stone-800">
+          <p>Controls 3</p>
+        </div>
+        <div class="bg-stone-800">
+          <p>Controls 4</p>
+        </div>
+      </section>
     </main>
   );
 }
