@@ -2,7 +2,7 @@ import ControlsGrid from '../components/ControlsGrid';
 
 export default function Step3() {
   return (
-    <main class="mx-auto p-4 text-center">
+    <main class="mx-auto p-4">
       <section class="info-and-canvas grid grid-cols-4 gap-1">
         <section class="col-span-1 flex flex-col">
           <h1 class="text-[2rem] uppercase">Level 3</h1>
@@ -12,7 +12,7 @@ export default function Step3() {
           </section>
         </section>
         <div class="future-canvas col-span-3">
-          <img src="3d_diagram_placeholder.png" class="w-full" />
+          <img src="3d_diagram_placeholder.png" class="diagram" />
         </div>
       </section>
 

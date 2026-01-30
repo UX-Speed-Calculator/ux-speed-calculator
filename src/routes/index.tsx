@@ -1,26 +1,28 @@
-import { A } from '@solidjs/router';
+import ControlsGrid from '../components/ControlsGrid';
 
-import { Counter } from '../components/Counter.tsx';
-
-export default function Home() {
+export default function Step1() {
   return (
-    <main class="mx-auto p-4 text-center text-gray-700">
-      <h1 class="max-6-xs my-16 text-6xl font-thin text-sky-700 uppercase">Hello world!</h1>
-      <Counter />
-      <p class="mt-8">
-        Visit{' '}
-        <a class="text-sky-600 hover:underline" href="https://solidjs.com" target="_blank">
-          solidjs.com
-        </a>{' '}
-        to learn how to build Solid apps.
-      </p>
-      <p class="my-4">
-        <span>Home</span>
-        {' - '}
-        <A class="text-sky-600 hover:underline" href="/about">
-          About Page
-        </A>{' '}
-      </p>
+    <main class="mx-auto p-4">
+      <section class="info-and-canvas grid grid-cols-4 gap-1">
+        <section class="col-span-1 flex flex-col">
+          <h1 class="text-[2rem] uppercase">Level 1</h1>
+          <section class="mt-5">
+            <h2>What Matters to My Business?</h2>
+            <p>
+              Conversion Rate origins: performance, presentation quality, SEO, availability, etc.
+            </p>
+          </section>
+        </section>
+        <div class="future-canvas col-span-3">
+          <img src="3d_diagram_placeholder.png" class="diagram" />
+        </div>
+      </section>
+
+      <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
+        <div class="bg-stone-800">
+          <p>Controls 1</p>
+        </div>
+      </section>
     </main>
   );
 }
