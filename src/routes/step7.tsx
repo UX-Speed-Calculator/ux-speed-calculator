@@ -19,6 +19,27 @@ export default function Step7() {
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
         <div class="bg-stone-800">
           <p>Controls 1</p>
+          <fieldset>
+            <legend>Bounce Rate</legend>
+            <div class="field">
+              <label title="Minimum bounce rate at theoretical 0">
+                Min bounce rate: <input type="number" min="0" max="100" step="0.5" value="20" />%
+              </label>
+              <input type="range" min="0" max="100" step="0.5" value="20" />
+            </div>
+            <div class="field">
+              <label title="How fast does bounce rate affect the users">
+                Bounce time compression: <input type="number" min="0" step="0.05" value="4" />
+              </label>
+              <input type="range" min="0" step="0.05" value="4" />
+            </div>
+            <div class="field">
+              <label title="How high is the bounce rate on the site">
+                Bounce rate scale: <input type="number" min="0" max="100" step="0.5" value="50" />%
+              </label>
+              <input type="range" min="0" max="100" step="0.5" value="50" />
+            </div>
+          </fieldset>
         </div>
         <div class="bg-stone-800">
           <p>Controls 2</p>
@@ -31,9 +52,51 @@ export default function Step7() {
         </div>
         <div class="bg-stone-800">
           <p>Controls 5</p>
+          <fieldset>
+            <legend>Bounce Rate</legend>
+            <div class="field">
+              <label title="Minimum bounce rate at theoretical 0">
+                Min bounce rate: <input type="number" min="0" max="100" step="0.5" value="20" />%
+              </label>
+              <input type="range" min="0" max="100" step="0.5" value="20" />
+            </div>
+            <div class="field">
+              <label title="How fast does bounce rate affect the users">
+                Bounce time compression: <input type="number" min="0" step="0.05" value="4" />
+              </label>
+              <input type="range" min="0" step="0.05" value="4" />
+            </div>
+            <div class="field">
+              <label title="How high is the bounce rate on the site">
+                Bounce rate scale: <input type="number" min="0" max="100" step="0.5" value="50" />%
+              </label>
+              <input type="range" min="0" max="100" step="0.5" value="50" />
+            </div>
+          </fieldset>
         </div>
         <div class="bg-stone-800">
           <p>Controls 6</p>
+          <fieldset>
+            <legend>Bounce Rate</legend>
+            <div class="field">
+              <label title="Minimum bounce rate at theoretical 0">
+                Min bounce rate: <input type="number" min="0" max="100" step="0.5" value="20" />%
+              </label>
+              <input type="range" min="0" max="100" step="0.5" value="20" />
+            </div>
+            <div class="field">
+              <label title="How fast does bounce rate affect the users">
+                Bounce time compression: <input type="number" min="0" step="0.05" value="4" />
+              </label>
+              <input type="range" min="0" step="0.05" value="4" />
+            </div>
+            <div class="field">
+              <label title="How high is the bounce rate on the site">
+                Bounce rate scale: <input type="number" min="0" max="100" step="0.5" value="50" />%
+              </label>
+              <input type="range" min="0" max="100" step="0.5" value="50" />
+            </div>
+          </fieldset>
         </div>
         <div class="bg-stone-800">
           <p>Controls 7</p>
