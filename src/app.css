@@ -24,3 +24,10 @@ nav .active {
 .diagram {
   height: 60vh;
 }
+
+canvas {
+  position: absolute;
+  top: 2.5rem;
+  right: 0;
+  z-index: 1;
+}
