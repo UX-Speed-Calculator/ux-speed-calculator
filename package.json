@@ -1,9 +1,9 @@
 {
   "name": "ux-speed-calculator",
   "engines": {
-    "node": "24.11.1"
+    "node": "24.13.1"
   },
-  "packageManager": "npm@11.6.2",
+  "packageManager": "npm@11.8.0",
   "scripts": {
     "build": "vinxi build",
     "check:formatting": "prettier --check --no-editorconfig .",
@@ -20,24 +20,24 @@
   },
   "dependencies": {
     "@solidjs/router": "0.15.4",
-    "@solidjs/start": "1.2.0",
-    "solid-js": "1.9.10",
-    "vinxi": "0.5.8"
+    "@solidjs/start": "1.2.1",
+    "solid-js": "1.9.11",
+    "vinxi": "0.5.11"
   },
   "devDependencies": {
     "@babbel/eslint-config": "2.5.1",
-    "@tailwindcss/vite": "4.1.17",
-    "@types/node": "24.10.1",
-    "browserslist": "4.28.0",
+    "@tailwindcss/vite": "4.2.0",
+    "@types/node": "24.10.13",
+    "browserslist": "4.28.1",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-solid": "0.14.5",
-    "prettier": "3.7.3",
-    "prettier-plugin-tailwindcss": "0.7.1",
-    "solid-devtools": "0.34.4",
-    "tailwindcss": "4.1.17",
+    "prettier": "3.8.1",
+    "prettier-plugin-tailwindcss": "0.7.2",
+    "solid-devtools": "0.34.5",
+    "tailwindcss": "4.2.0",
     "typescript": "5.9.3",
-    "wrangler": "4.61.0"
+    "wrangler": "4.66.0"
   }
 }
