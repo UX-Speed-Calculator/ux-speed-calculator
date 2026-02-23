@@ -23,7 +23,7 @@
     "@solidjs/start": "1.2.1",
     "solid-js": "1.9.11",
     "vinxi": "0.5.11",
-    "three": "0.182.0",
+    "three": "0.182.0"
   },
   "devDependencies": {
     "@babbel/eslint-config": "2.5.1",
