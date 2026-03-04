@@ -13,6 +13,14 @@ export default function ThreeScene() {
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
+  //axes helper
+  const axesHelper = new THREE.AxesHelper(5);
+  scene.add(axesHelper);
+
+  //"flood" grid
+  const gridHelper = new THREE.GridHelper(10, 10);
+  scene.add(gridHelper);
+
   onMount(() => {
     //Sizes
     const sizes = {
@@ -23,6 +31,7 @@ export default function ThreeScene() {
     //Camera
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
     camera.position.z = 3;
+    camera.position.y = 2;
     scene.add(camera);
 
     //animation function

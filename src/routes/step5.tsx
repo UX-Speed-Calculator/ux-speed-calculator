@@ -11,9 +11,7 @@ export default function Step5() {
             <p>...</p>
           </section>
         </section>
-        <div class="future-canvas col-span-3">
-          <img src="3d_diagram_placeholder.png" class="diagram" />
-        </div>
+        <div class="future-canvas col-span-3"></div>
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">

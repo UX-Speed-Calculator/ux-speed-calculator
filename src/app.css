@@ -8,7 +8,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background-rgb: 11, 10, 9;
-    --foreground-rgb: 121, 113, 107;
+    --foreground-rgb: 231, 229, 228;
   }
 }
 
@@ -30,4 +30,8 @@ canvas {
   top: 2.5rem;
   right: 0;
   z-index: 1;
+}
+
+.future-canvas {
+  height: 50vh;
 }
