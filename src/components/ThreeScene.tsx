@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { onMount } from 'solid-js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 export default function ThreeScene() {
   let canvas: HTMLCanvasElement;
@@ -8,10 +9,19 @@ export default function ThreeScene() {
   const scene = new THREE.Scene();
 
   //geometry
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: '#ff0000' });
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+  const sphere1geometry = new THREE.SphereGeometry(0.5, 16, 16);
+  const material = new THREE.MeshBasicMaterial({ color: '#f5eace' });
+  const sphere1mesh = new THREE.Mesh(sphere1geometry, material);
+
+  const sphere2mesh = new THREE.Mesh(sphere1geometry, material);
+  const sphere3mesh = new THREE.Mesh(sphere1geometry, material);
+
+  sphere2mesh.position.x = 1;
+  sphere3mesh.position.x = 2;
+
+  scene.add(sphere1mesh);
+  scene.add(sphere2mesh);
+  scene.add(sphere3mesh);
 
   //axes helper
   const axesHelper = new THREE.AxesHelper(5);
@@ -34,13 +44,16 @@ export default function ThreeScene() {
     camera.position.y = 2;
     scene.add(camera);
 
+    // Controls
+    const controls = new OrbitControls(camera, canvas);
+
     //animation function
     function animate() {
       requestAnimationFrame(animate);
 
       // Rotate the cube for demonstration purposes
-      mesh.rotation.x += 0.01;
-      mesh.rotation.y += 0.01;
+      // mesh.rotation.x += 0.01;
+      // mesh.rotation.y += 0.01;
 
       // controls.update(); // Update the controls (required for damping)
       renderer.render(scene, camera);
