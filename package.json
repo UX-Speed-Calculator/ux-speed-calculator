@@ -21,9 +21,10 @@
   "dependencies": {
     "@solidjs/router": "0.15.4",
     "@solidjs/start": "1.2.1",
+    "lil-gui": "0.21.0",
     "solid-js": "1.9.11",
-    "vinxi": "0.5.11",
-    "three": "0.182.0"
+    "three": "0.182.0",
+    "vinxi": "0.5.11"
   },
   "devDependencies": {
     "@babbel/eslint-config": "2.5.1",
