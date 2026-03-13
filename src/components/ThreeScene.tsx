@@ -24,6 +24,9 @@ export default function ThreeScene() {
     const textureLoader = new THREE.TextureLoader();
     const angryTexture = textureLoader.load('public/angry_emoji_texture.jpg');
     angryTexture.colorSpace = THREE.SRGBColorSpace;
+    angryTexture.center.x = 0.5;
+    angryTexture.center.y = 0.5;
+    angryTexture.offset.x = 0.25;
 
     //scene
     const scene = new THREE.Scene();
