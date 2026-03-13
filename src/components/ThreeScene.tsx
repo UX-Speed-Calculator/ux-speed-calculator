@@ -48,8 +48,8 @@ export default function ThreeScene() {
       debugParams.columns.slice(0, debugParams.columnCount).forEach((column, colIndex) => {
         for (let i = 0; i < column.numUsers; i++) {
           const sphereMesh = new THREE.Mesh(sphere1geometry, material);
-          sphereMesh.position.x = colIndex * 1;
-          sphereMesh.position.y = i * 0.4;
+          sphereMesh.position.x = colIndex * 0.5;
+          sphereMesh.position.y = i * 0.5;
           spheresGroup.add(sphereMesh);
         }
       });
