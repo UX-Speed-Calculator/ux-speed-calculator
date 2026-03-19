@@ -23,10 +23,20 @@ export default function ThreeScene() {
     //Textures
     const textureLoader = new THREE.TextureLoader();
     const angryTexture = textureLoader.load('public/angry_emoji_texture.jpg');
+    const neutralTexture = textureLoader.load('public/neutral_emoji_texture.jpg');
+    const happyTexture = textureLoader.load('public/happy_emoji_texture.jpg');
     angryTexture.colorSpace = THREE.SRGBColorSpace;
+    neutralTexture.colorSpace = THREE.SRGBColorSpace;
+    happyTexture.colorSpace = THREE.SRGBColorSpace;
     angryTexture.center.x = 0.5;
     angryTexture.center.y = 0.5;
     angryTexture.offset.x = 0.25;
+    neutralTexture.center.x = 0.5;
+    neutralTexture.center.y = 0.5;
+    neutralTexture.offset.x = 0.25;
+    happyTexture.center.x = 0.5;
+    happyTexture.center.y = 0.5;
+    happyTexture.offset.x = 0.25;
 
     //scene
     const scene = new THREE.Scene();
