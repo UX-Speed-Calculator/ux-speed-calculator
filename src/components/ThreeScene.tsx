@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { onMount } from 'solid-js';
+import { onMount, onCleanup } from 'solid-js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import GUI from 'lil-gui';
 
@@ -22,9 +22,9 @@ export default function ThreeScene() {
 
     //Textures
     const textureLoader = new THREE.TextureLoader();
-    const angryTexture = textureLoader.load('public/angry_emoji_texture.jpg');
-    const neutralTexture = textureLoader.load('public/neutral_emoji_texture.jpg');
-    const happyTexture = textureLoader.load('public/happy_emoji_texture.jpg');
+    const angryTexture = textureLoader.load('/angry_emoji_texture.jpg');
+    const neutralTexture = textureLoader.load('/neutral_emoji_texture.jpg');
+    const happyTexture = textureLoader.load('/happy_emoji_texture.jpg');
     angryTexture.colorSpace = THREE.SRGBColorSpace;
     neutralTexture.colorSpace = THREE.SRGBColorSpace;
     happyTexture.colorSpace = THREE.SRGBColorSpace;
@@ -44,7 +44,11 @@ export default function ThreeScene() {
 
     //geometry
     const sphere1geometry = new THREE.SphereGeometry(0.25, 16, 16);
-    const material = new THREE.MeshBasicMaterial({ map: angryTexture });
+    
+    // Materials
+    const angryMaterial = new THREE.MeshBasicMaterial({ map: angryTexture });
+    const neutralMaterial = new THREE.MeshBasicMaterial({ map: neutralTexture });
+    const happyMaterial = new THREE.MeshBasicMaterial({ map: happyTexture });
 
     const updateSpheres = () => {
       // Clear existing spheres
@@ -54,13 +58,27 @@ export default function ThreeScene() {
         spheresGroup.remove(child);
       }
 
+      const activeColumns = debugParams.columns.slice(0, debugParams.columnCount);
+      const totalUsers = activeColumns.reduce((sum, col) => sum + col.numUsers, 0);
+      let globalIndex = 0;
+
       // Rebuild spheres based on debugParams
-      debugParams.columns.slice(0, debugParams.columnCount).forEach((column, colIndex) => {
+      activeColumns.forEach((column, colIndex) => {
         for (let i = 0; i < column.numUsers; i++) {
-          const sphereMesh = new THREE.Mesh(sphere1geometry, material);
+          let currentMaterial;
+          if (globalIndex < totalUsers / 3) {
+            currentMaterial = angryMaterial;
+          } else if (globalIndex < (totalUsers * 2) / 3) {
+            currentMaterial = neutralMaterial;
+          } else {
+            currentMaterial = happyMaterial;
+          }
+
+          const sphereMesh = new THREE.Mesh(sphere1geometry, currentMaterial);
           sphereMesh.position.x = colIndex * 0.5;
           sphereMesh.position.y = i * 0.5;
           spheresGroup.add(sphereMesh);
+          globalIndex++;
         }
       });
     };
@@ -79,10 +97,29 @@ export default function ThreeScene() {
     // Debug GUI
     const gui = new GUI();
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'g') {
+        gui._hidden ? gui.show() : gui.hide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    onCleanup(() => {
+      window.removeEventListener('keydown', handleKeyDown);
+      gui.destroy();
+    });
+
     // Material debug
-    const materialFolder = gui.addFolder('Material');
-    materialFolder.addColor(material, 'color').name('Sphere Color');
-    materialFolder.add(material, 'wireframe');
+    const materialFolder = gui.addFolder('Materials');
+    materialFolder.addColor(angryMaterial, 'color').name('Sphere Color').onChange((val: any) => {
+      neutralMaterial.color.set(val);
+      happyMaterial.color.set(val);
+    });
+    materialFolder.add(angryMaterial, 'wireframe').onChange((val: boolean) => {
+      neutralMaterial.wireframe = val;
+      happyMaterial.wireframe = val;
+    });
 
     // Columns debug
     const columnsFolder = gui.addFolder('Columns');
