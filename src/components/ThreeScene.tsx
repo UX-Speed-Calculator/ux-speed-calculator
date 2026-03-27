@@ -1,30 +1,21 @@
 import * as THREE from 'three';
-import { onMount } from 'solid-js';
+import { onMount, createEffect } from 'solid-js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import GUI from 'lil-gui';
+import { distribution } from '../lib/store';
 
 export default function ThreeScene() {
   let canvas: HTMLCanvasElement;
   const spheresGroup = new THREE.Group();
-
-  const debugParams = {
-    columnCount: 5,
-    columns: [
-      { numUsers: 10 },
-      { numUsers: 25 },
-      { numUsers: 15 },
-      { numUsers: 40 },
-      { numUsers: 20 },
-    ],
-  };
 
   //scene
   const scene = new THREE.Scene();
   scene.add(spheresGroup);
 
   //geometry
-  const sphere1geometry = new THREE.SphereGeometry(0.25, 16, 16);
+  const sphere1geometry = new THREE.SphereGeometry(0.1, 8, 8);
   const material = new THREE.MeshBasicMaterial({ color: '#f5eace' });
+  const convertedMaterial = new THREE.MeshBasicMaterial({ color: '#10b981' }); // emerald-500
+  const bouncedMaterial = new THREE.MeshBasicMaterial({ color: '#f43f5e' }); // rose-500
 
   const updateSpheres = () => {
     // Clear existing spheres
@@ -34,13 +25,45 @@ export default function ThreeScene() {
       spheresGroup.remove(child);
     }
 
-    // Rebuild spheres based on debugParams
-    debugParams.columns.slice(0, debugParams.columnCount).forEach((column, colIndex) => {
-      for (let i = 0; i < column.numUsers; i++) {
-        const sphereMesh = new THREE.Mesh(sphere1geometry, material);
-        sphereMesh.position.x = colIndex * 1;
-        sphereMesh.position.y = i * 0.4;
+    const dist = distribution();
+    const scaleFactor = 10000; // Render 1 sphere per 10,000 users
+
+    // We only show up to a certain time for performance
+    const maxBuckets = 50; 
+    
+    dist.totalPopulation.slice(0, maxBuckets).forEach((population, colIndex) => {
+      const converted = dist.convertedDistribution[colIndex];
+      const bounced = dist.bouncedDistribution[colIndex];
+      const others = population - converted - bounced;
+
+      const numConverted = Math.round(converted / scaleFactor);
+      const numBounced = Math.round(bounced / scaleFactor);
+      const numOthers = Math.round(others / scaleFactor);
+
+      let currentY = 0;
+
+      for (let i = 0; i < numConverted; i++) {
+        const sphereMesh = new THREE.Mesh(sphere1geometry, convertedMaterial);
+        sphereMesh.position.x = colIndex * 0.3 - (maxBuckets * 0.3) / 2;
+        sphereMesh.position.y = currentY;
         spheresGroup.add(sphereMesh);
+        currentY += 0.2;
+      }
+
+      for (let i = 0; i < numOthers; i++) {
+        const sphereMesh = new THREE.Mesh(sphere1geometry, material);
+        sphereMesh.position.x = colIndex * 0.3 - (maxBuckets * 0.3) / 2;
+        sphereMesh.position.y = currentY;
+        spheresGroup.add(sphereMesh);
+        currentY += 0.2;
+      }
+
+      for (let i = 0; i < numBounced; i++) {
+        const sphereMesh = new THREE.Mesh(sphere1geometry, bouncedMaterial);
+        sphereMesh.position.x = colIndex * 0.3 - (maxBuckets * 0.3) / 2;
+        sphereMesh.position.y = currentY;
+        spheresGroup.add(sphereMesh);
+        currentY += 0.2;
       }
     });
   };
@@ -53,81 +76,60 @@ export default function ThreeScene() {
   scene.add(axesHelper);
 
   //"flood" grid
-  const gridHelper = new THREE.GridHelper(10, 10);
+  const gridHelper = new THREE.GridHelper(20, 20);
   scene.add(gridHelper);
 
   onMount(() => {
-    // Debug GUI
-    const gui = new GUI();
-
-    // Material debug
-    const materialFolder = gui.addFolder('Material');
-    materialFolder.addColor(material, 'color').name('Sphere Color');
-    materialFolder.add(material, 'wireframe');
-
-    // Columns debug
-    const columnsFolder = gui.addFolder('Columns');
-    
-    const refreshColumnControls = () => {
-      // Clear previous column count controls if any
-      const existing = columnsFolder.children.filter(c => c._name.startsWith('Column '));
-      existing.forEach(c => c.destroy());
-
-      // Add controls for current columns
-      debugParams.columns.slice(0, debugParams.columnCount).forEach((col, index) => {
-        columnsFolder.add(col, 'numUsers', 1, 100, 1)
-          .name(`Column ${index + 1} Users`)
-          .onChange(updateSpheres);
-      });
-    };
-
-    columnsFolder.add(debugParams, 'columnCount', 1, 50, 1)
-      .name('Number of Columns')
-      .onChange(() => {
-        // Ensure debugParams.columns has enough entries
-        while (debugParams.columns.length < debugParams.columnCount) {
-          debugParams.columns.push({ numUsers: 10 });
-        }
-        refreshColumnControls();
-        updateSpheres();
-      });
-
-    refreshColumnControls();
-
     //Sizes
     const sizes = {
-      width: window.innerWidth * 0.7,
-      height: window.innerHeight * 0.5,
+      width: window.innerWidth,
+      height: 400,
     };
 
     //Camera
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-    camera.position.z = 3;
-    camera.position.y = 2;
+    camera.position.z = 10;
+    camera.position.y = 5;
     scene.add(camera);
 
     // Controls
     const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
 
     //animation function
     function animate() {
       requestAnimationFrame(animate);
-
-      // Rotate the cube for demonstration purposes
-      // mesh.rotation.x += 0.01;
-      // mesh.rotation.y += 0.01;
-
-      // controls.update(); // Update the controls (required for damping)
+      controls.update();
       renderer.render(scene, camera);
     }
 
     //Renderer
     const renderer = new THREE.WebGLRenderer({
       canvas,
+      alpha: true,
     });
     renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
     animate();
+
+    // Resize handler
+    const handleResize = () => {
+      sizes.width = window.innerWidth;
+      renderer.setSize(sizes.width, sizes.height);
+      camera.aspect = sizes.width / sizes.height;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener('resize', handleResize);
+
+    createEffect(() => {
+      updateSpheres();
+    });
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   });
 
-  return <canvas ref={canvas} />;
+  return <canvas ref={canvas} class="w-full h-[400px]" />;
 }

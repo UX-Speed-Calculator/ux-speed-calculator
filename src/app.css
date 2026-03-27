@@ -1,37 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background-rgb: 121, 113, 107;
-  --foreground-rgb: 11, 10, 9;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-rgb: 11, 10, 9;
-    --foreground-rgb: 231, 229, 228;
-  }
+  --background-rgb: 12, 12, 12;
+  --foreground-rgb: 231, 229, 228;
 }
 
 body {
   background: rgb(var(--background-rgb));
   color: rgb(var(--foreground-rgb));
-}
-
-nav .active {
-  color: white;
-}
-
-.diagram {
-  height: 60vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
 canvas {
-  position: absolute;
-  top: 2.5rem;
-  right: 0;
-  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+input[type="range"] {
+  @apply accent-emerald-500;
 }
 
 .future-canvas {
-  height: 50vh;
+  @apply bg-stone-900/30 rounded-2xl border border-stone-800/50 overflow-hidden;
 }
