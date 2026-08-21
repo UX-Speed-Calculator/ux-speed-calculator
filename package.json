@@ -1,45 +1,47 @@
 {
   "name": "ux-speed-calculator",
   "engines": {
-    "node": "24.13.1"
+    "node": "24.15.0"
   },
-  "packageManager": "npm@11.8.0",
+  "packageManager": "npm@11.12.1",
   "scripts": {
-    "build": "vinxi build",
+    "build": "vite build",
     "check:formatting": "prettier --check --no-editorconfig .",
     "check:lint-conflicts": "eslint-config-prettier ./src/app.tsx",
     "check:types": "tsc",
-    "clean:vinxi": "rm -rf .output/ .vinxi/ node_modules/.vinxi/",
+    "clean": "rm -rf .output",
     "format:code": "prettier --write --no-editorconfig .",
     "lint:typescript": "echo Linting all TypeScript... && eslint --ext cts,ts,tsx,mts --max-warnings 0 .",
     "list:browsers-supported": "echo Browsers targeted by browserslist: && browserslist",
     "list:eslint:disable-directives": "rg '/(/|\\*+)[ \\t]*eslint-disable[^*]*(\\*+/)?'",
     "list:todo-comments": "rg --only-matching '(TODO|FIXME)([\t ]+\\[[^\\]]+\\])?:[\\w\\s!\"#$%&'\\''()+,./:;<=>?@\\^_`{|}~-]+'",
+    "preview": "vite preview",
     "reinstall": "rm -rf package-lock.json node_modules && npm install",
-    "start": "vinxi dev --devtools"
+    "start": "vite dev"
   },
   "dependencies": {
-    "@solidjs/router": "0.15.4",
-    "@solidjs/start": "1.2.1",
+    "@solidjs/router": "1.0.0",
+    "@solidjs/start": "2.0.3",
     "lil-gui": "0.21.0",
-    "solid-js": "1.9.11",
-    "three": "0.182.0",
-    "vinxi": "0.5.11"
+    "nitro": "3.0.260610-beta",
+    "solid-js": "1.9.15",
+    "three": "0.185.1"
   },
   "devDependencies": {
     "@babbel/eslint-config": "2.5.1",
-    "@tailwindcss/vite": "4.2.0",
-    "@types/node": "24.10.13",
-    "browserslist": "4.28.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "24.13.3",
+    "@types/three": "0.185.4",
+    "browserslist": "4.28.8",
     "eslint": "8.57.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-solid": "0.14.5",
-    "prettier": "3.8.1",
-    "prettier-plugin-tailwindcss": "0.7.2",
-    "solid-devtools": "0.34.5",
-    "tailwindcss": "4.2.0",
-    "typescript": "5.9.3",
-    "wrangler": "4.66.0"
+    "prettier": "3.9.6",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "wrangler": "4.125.0"
   }
 }

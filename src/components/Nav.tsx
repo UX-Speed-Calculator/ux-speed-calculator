@@ -1,14 +1,11 @@
-import { useLocation } from '@solidjs/router';
 import { A } from '@solidjs/router';
 
 function Nav() {
-  const location = useLocation();
-
   return (
     <nav class="flex flex-col items-center bg-stone-900">
       <ul class="container flex items-center justify-evenly p-2">
         <li class={`font-[1000]`}>
-          <A href="/" end>
+          <A end href="/">
             Level 1
           </A>
         </li>

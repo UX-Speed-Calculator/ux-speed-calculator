@@ -1,9 +1,8 @@
-import * as THREE from 'three';
-import { onMount, onCleanup } from 'solid-js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import GUI from 'lil-gui';
+import { onCleanup, onMount } from 'solid-js';
+import * as THREE from 'three';
 
-export default function ThreeScene() {
+export function ThreeScene() {
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
@@ -20,7 +19,7 @@ export default function ThreeScene() {
       ],
     };
 
-    //Textures
+    // Textures
     const textureLoader = new THREE.TextureLoader();
     const angryTexture = textureLoader.load('/angry_emoji_texture.jpg');
     const neutralTexture = textureLoader.load('/neutral_emoji_texture.jpg');
@@ -38,13 +37,13 @@ export default function ThreeScene() {
     happyTexture.center.y = 0.5;
     happyTexture.offset.x = 0.25;
 
-    //scene
+    // scene
     const scene = new THREE.Scene();
     scene.add(spheresGroup);
 
-    //geometry
+    // geometry
     const sphere1geometry = new THREE.SphereGeometry(0.25, 16, 16);
-    
+
     // Materials
     const angryMaterial = new THREE.MeshBasicMaterial({ map: angryTexture });
     const neutralMaterial = new THREE.MeshBasicMaterial({ map: neutralTexture });
@@ -86,11 +85,11 @@ export default function ThreeScene() {
     // Initial build
     updateSpheres();
 
-    //axes helper
+    // axes helper
     const axesHelper = new THREE.AxesHelper(5);
     scene.add(axesHelper);
 
-    //"flood" grid
+    // "flood" grid
     const gridHelper = new THREE.GridHelper(10, 10);
     scene.add(gridHelper);
 
@@ -112,10 +111,13 @@ export default function ThreeScene() {
 
     // Material debug
     const materialFolder = gui.addFolder('Materials');
-    materialFolder.addColor(angryMaterial, 'color').name('Sphere Color').onChange((val: any) => {
-      neutralMaterial.color.set(val);
-      happyMaterial.color.set(val);
-    });
+    materialFolder
+      .addColor(angryMaterial, 'color')
+      .name('Sphere Color')
+      .onChange((val: any) => {
+        neutralMaterial.color.set(val);
+        happyMaterial.color.set(val);
+      });
     materialFolder.add(angryMaterial, 'wireframe').onChange((val: boolean) => {
       neutralMaterial.wireframe = val;
       happyMaterial.wireframe = val;
@@ -126,7 +128,8 @@ export default function ThreeScene() {
 
     const refreshColumnControls = () => {
       // Clear previous column count controls if any
-      const existing = columnsFolder.children.filter((c) => c._name.startsWith('Column '));
+      // const existing = columnsFolder.children.filter((c) => c._name.startsWith('Column '));
+      const existing = columnsFolder.children;
       existing.forEach((c) => c.destroy());
 
       // Add controls for current columns
@@ -152,28 +155,26 @@ export default function ThreeScene() {
 
     refreshColumnControls();
 
-    //Sizes
+    // Sizes
     const sizes = {
       width: window.innerWidth * 0.7,
       height: window.innerHeight * 0.5,
     };
 
-    //Camera
+    // Camera
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
     camera.position.z = 3;
     camera.position.y = 2;
     scene.add(camera);
 
     // Controls
-    const controls = new OrbitControls(camera, canvas);
+    // const controls = new OrbitControls(camera, canvas);
 
-    //Renderer
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-    });
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas! });
     renderer.setSize(sizes.width, sizes.height);
 
-    //animation function
+    // animation function
     function animate() {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);

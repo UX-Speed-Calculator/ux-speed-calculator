@@ -1,1 +1,0 @@
-config/vinxi/app.config.mts

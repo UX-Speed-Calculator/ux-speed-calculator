@@ -5,7 +5,7 @@
     "erasableSyntaxOnly": true,
     "jsxImportSource": "solid-js",
     "target": "es2024",
-    "types": ["node", "vinxi/types/client"],
+    "types": ["@solidjs/start/env"],
 
     "module": "ESNext",
     "moduleResolution": "Bundler",

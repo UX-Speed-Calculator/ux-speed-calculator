@@ -1,5 +1,3 @@
-import ControlsGrid from '../components/ControlsGrid';
-
 export default function Step3() {
   return (
     <main class="mx-auto p-4">
