@@ -2,13 +2,15 @@ import GUI from 'lil-gui';
 import { onCleanup, onMount } from 'solid-js';
 import * as THREE from 'three';
 
+import type { ColorRepresentation } from 'three';
+
 export function ThreeScene() {
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
     const spheresGroup = new THREE.Group();
 
-    const debugParams = {
+    const debugParameters = {
       columnCount: 5,
       columns: [
         { numUsers: 10 },
@@ -57,13 +59,14 @@ export function ThreeScene() {
         spheresGroup.remove(child);
       }
 
-      const activeColumns = debugParams.columns.slice(0, debugParams.columnCount);
+      const activeColumns = debugParameters.columns.slice(0, debugParameters.columnCount);
       const totalUsers = activeColumns.reduce((sum, col) => sum + col.numUsers, 0);
       let globalIndex = 0;
 
       // Rebuild spheres based on debugParams
-      activeColumns.forEach((column, colIndex) => {
-        for (let i = 0; i < column.numUsers; i++) {
+      for (const [colIndex, column] of activeColumns.entries()) {
+        // eslint-disable-next-line no-plusplus -- intentional part of the algorithm
+        for (let index = 0; index < column.numUsers; index++) {
           let currentMaterial;
           if (globalIndex < totalUsers / 3) {
             currentMaterial = angryMaterial;
@@ -75,11 +78,11 @@ export function ThreeScene() {
 
           const sphereMesh = new THREE.Mesh(sphere1geometry, currentMaterial);
           sphereMesh.position.x = colIndex * 0.5;
-          sphereMesh.position.y = i * 0.5;
+          sphereMesh.position.y = index * 0.5;
           spheresGroup.add(sphereMesh);
-          globalIndex++;
+          globalIndex++; // eslint-disable-line no-plusplus -- intentional part of the algorithm
         }
-      });
+      }
     };
 
     // Initial build
@@ -98,14 +101,19 @@ export function ThreeScene() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'g') {
-        gui._hidden ? gui.show() : gui.hide();
+        // eslint-disable-next-line no-underscore-dangle -- internal API
+        if (gui._hidden) {
+          gui.show();
+        } else {
+          gui.hide();
+        }
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    globalThis.addEventListener('keydown', handleKeyDown);
 
     onCleanup(() => {
-      window.removeEventListener('keydown', handleKeyDown);
+      globalThis.removeEventListener('keydown', handleKeyDown);
       gui.destroy();
     });
 
@@ -114,13 +122,13 @@ export function ThreeScene() {
     materialFolder
       .addColor(angryMaterial, 'color')
       .name('Sphere Color')
-      .onChange((val: any) => {
-        neutralMaterial.color.set(val);
-        happyMaterial.color.set(val);
+      .onChange((value: ColorRepresentation) => {
+        neutralMaterial.color.set(value);
+        happyMaterial.color.set(value);
       });
-    materialFolder.add(angryMaterial, 'wireframe').onChange((val: boolean) => {
-      neutralMaterial.wireframe = val;
-      happyMaterial.wireframe = val;
+    materialFolder.add(angryMaterial, 'wireframe').onChange((value: boolean) => {
+      neutralMaterial.wireframe = value;
+      happyMaterial.wireframe = value;
     });
 
     // Columns debug
@@ -130,24 +138,26 @@ export function ThreeScene() {
       // Clear previous column count controls if any
       // const existing = columnsFolder.children.filter((c) => c._name.startsWith('Column '));
       const existing = columnsFolder.children;
-      existing.forEach((c) => c.destroy());
+      for (const c of existing) c.destroy();
 
       // Add controls for current columns
-      debugParams.columns.slice(0, debugParams.columnCount).forEach((col, index) => {
+      for (const [index, col] of debugParameters.columns
+        .slice(0, debugParameters.columnCount)
+        .entries()) {
         columnsFolder
           .add(col, 'numUsers', 1, 100, 1)
           .name(`Column ${index + 1} Users`)
           .onChange(updateSpheres);
-      });
+      }
     };
 
     columnsFolder
-      .add(debugParams, 'columnCount', 1, 50, 1)
+      .add(debugParameters, 'columnCount', 1, 50, 1)
       .name('Number of Columns')
       .onChange(() => {
         // Ensure debugParams.columns has enough entries
-        while (debugParams.columns.length < debugParams.columnCount) {
-          debugParams.columns.push({ numUsers: 10 });
+        while (debugParameters.columns.length < debugParameters.columnCount) {
+          debugParameters.columns.push({ numUsers: 10 });
         }
         refreshColumnControls();
         updateSpheres();
@@ -157,8 +167,8 @@ export function ThreeScene() {
 
     // Sizes
     const sizes = {
-      width: window.innerWidth * 0.7,
       height: window.innerHeight * 0.5,
+      width: window.innerWidth * 0.7,
     };
 
     // Camera

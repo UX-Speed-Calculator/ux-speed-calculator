@@ -9,7 +9,7 @@ export default function Step6() {
             <p>...</p>
           </section>
         </section>
-        <div class="future-canvas col-span-3"></div>
+        <div class="future-canvas col-span-3" />
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
@@ -22,21 +22,21 @@ export default function Step6() {
             <legend>Bounce Rate</legend>
             <div class="field">
               <label title="Minimum bounce rate at theoretical 0">
-                Min bounce rate: <input type="number" min="0" max="100" step="0.5" value="20" />%
+                Min bounce rate: <input max="100" min="0" step="0.5" type="number" value="20" />%
               </label>
-              <input type="range" min="0" max="100" step="0.5" value="20" />
+              <input max="100" min="0" step="0.5" type="range" value="20" />
             </div>
             <div class="field">
               <label title="How fast does bounce rate affect the users">
-                Bounce time compression: <input type="number" min="0" step="0.05" value="4" />
+                Bounce time compression: <input min="0" step="0.05" type="number" value="4" />
               </label>
-              <input type="range" min="0" step="0.05" value="4" />
+              <input min="0" step="0.05" type="range" value="4" />
             </div>
             <div class="field">
               <label title="How high is the bounce rate on the site">
-                Bounce rate scale: <input type="number" min="0" max="100" step="0.5" value="50" />%
+                Bounce rate scale: <input max="100" min="0" step="0.5" type="number" value="50" />%
               </label>
-              <input type="range" min="0" max="100" step="0.5" value="50" />
+              <input max="100" min="0" step="0.5" type="range" value="50" />
             </div>
           </fieldset>
         </div>
@@ -52,21 +52,21 @@ export default function Step6() {
             <legend>Bounce Rate</legend>
             <div class="field">
               <label title="Minimum bounce rate at theoretical 0">
-                Min bounce rate: <input type="number" min="0" max="100" step="0.5" value="20" />%
+                Min bounce rate: <input max="100" min="0" step="0.5" type="number" value="20" />%
               </label>
-              <input type="range" min="0" max="100" step="0.5" value="20" />
+              <input max="100" min="0" step="0.5" type="range" value="20" />
             </div>
             <div class="field">
               <label title="How fast does bounce rate affect the users">
-                Bounce time compression: <input type="number" min="0" step="0.05" value="4" />
+                Bounce time compression: <input min="0" step="0.05" type="number" value="4" />
               </label>
-              <input type="range" min="0" step="0.05" value="4" />
+              <input min="0" step="0.05" type="range" value="4" />
             </div>
             <div class="field">
               <label title="How high is the bounce rate on the site">
-                Bounce rate scale: <input type="number" min="0" max="100" step="0.5" value="50" />%
+                Bounce rate scale: <input max="100" min="0" step="0.5" type="number" value="50" />%
               </label>
-              <input type="range" min="0" max="100" step="0.5" value="50" />
+              <input max="100" min="0" step="0.5" type="range" value="50" />
             </div>
           </fieldset>
         </div>

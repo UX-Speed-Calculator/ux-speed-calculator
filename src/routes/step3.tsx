@@ -9,7 +9,7 @@ export default function Step3() {
             <p>3.4 Seconds, the time it takes to do 1 important thing.</p>
           </section>
         </section>
-        <div class="future-canvas col-span-3"></div>
+        <div class="future-canvas col-span-3" />
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">

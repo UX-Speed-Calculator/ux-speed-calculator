@@ -5,8 +5,8 @@ import { defineConfig } from 'vite';
 
 // eslint-disable-next-line import/no-default-export -- Vite config requires a default export
 export default defineConfig({
-  plugins: [solidStart({}), nitro(), tailwindcss()],
   nitro: {
     preset: 'cloudflare_module',
   },
+  plugins: [solidStart({}), nitro(), tailwindcss()],
 });

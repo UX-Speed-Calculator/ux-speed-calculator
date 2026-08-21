@@ -9,7 +9,7 @@ export default function Step5() {
             <p>...</p>
           </section>
         </section>
-        <div class="future-canvas col-span-3"></div>
+        <div class="future-canvas col-span-3" />
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">

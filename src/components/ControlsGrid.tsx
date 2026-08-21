@@ -1,4 +1,4 @@
-export default function ControlsGrid() {
+export function ControlsGrid() {
   return (
     <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
       <div class="bg-stone-800">
