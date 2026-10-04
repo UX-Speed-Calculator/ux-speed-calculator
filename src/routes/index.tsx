@@ -1,3 +1,7 @@
+import { ControlPanel } from '../components/ControlPanel.tsx';
+import { InputControl } from '../components/InputControl.tsx';
+import { SliderControl } from '../components/SliderControl.tsx';
+
 export default function Step1() {
   return (
     <main class="mx-auto p-4">
@@ -15,9 +19,19 @@ export default function Step1() {
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
-        <div class="bg-stone-800">
-          <p>Controls 1</p>
-        </div>
+        <ControlPanel
+          description="Placeholder controls. Replace with this step's real inputs."
+          title="Controls 1"
+        >
+          <SliderControl defaultValue={50} label="Sample slider" max={100} min={0} unit="%" />
+        </ControlPanel>
+        <ControlPanel
+          description="Placeholder controls. Replace with this step's real inputs."
+          title="Controls 2"
+        >
+          <InputControl defaultValue={10} label="Sample number" min={0} />
+          <InputControl label="Sample text" placeholder="Enter text" type="text" />
+        </ControlPanel>
       </section>
     </main>
   );
