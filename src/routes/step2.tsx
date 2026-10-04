@@ -1,3 +1,9 @@
+import { BounceRatePanel } from '../components/BounceRatePanel.tsx';
+import { ControlPanel } from '../components/ControlPanel.tsx';
+import { InputControl } from '../components/InputControl.tsx';
+import { SliderControl } from '../components/SliderControl.tsx';
+import { ToggleControl } from '../components/ToggleControl.tsx';
+
 export default function Step2() {
   return (
     <main class="mx-auto p-4">
@@ -13,33 +19,27 @@ export default function Step2() {
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
-        <div class="bg-stone-800">
-          <p>Controls 1</p>
-        </div>
-        <div class="bg-stone-800">
-          <p>Controls 2</p>
-          <fieldset>
-            <legend>Bounce Rate</legend>
-            <div class="field">
-              <label title="Minimum bounce rate at theoretical 0">
-                Min bounce rate: <input max="100" min="0" step="0.5" type="number" value="20" />%
-              </label>
-              <input max="100" min="0" step="0.5" type="range" value="20" />
-            </div>
-            <div class="field">
-              <label title="How fast does bounce rate affect the users">
-                Bounce time compression: <input min="0" step="0.05" type="number" value="4" />
-              </label>
-              <input min="0" step="0.05" type="range" value="4" />
-            </div>
-            <div class="field">
-              <label title="How high is the bounce rate on the site">
-                Bounce rate scale: <input max="100" min="0" step="0.5" type="number" value="50" />%
-              </label>
-              <input max="100" min="0" step="0.5" type="range" value="50" />
-            </div>
-          </fieldset>
-        </div>
+        <ControlPanel
+          description="Placeholder controls. Replace with this step's real inputs."
+          title="Controls 1"
+        >
+          <SliderControl defaultValue={50} label="Sample slider" max={100} min={0} unit="%" />
+        </ControlPanel>
+        <BounceRatePanel />
+        <ControlPanel
+          description="Placeholder controls. Replace with this step's real inputs."
+          title="Controls 3"
+        >
+          <InputControl defaultValue={10} label="Sample number" min={0} />
+          <InputControl label="Sample text" placeholder="Enter text" type="text" />
+        </ControlPanel>
+        <ControlPanel
+          description="Placeholder controls. Replace with this step's real inputs."
+          title="Controls 4"
+        >
+          <ToggleControl defaultChecked label="Sample toggle A" />
+          <ToggleControl label="Sample toggle B" />
+        </ControlPanel>
       </section>
     </main>
   );
