@@ -5,6 +5,7 @@ import { FileRoutes } from '@solidjs/start/router';
 import { Suspense } from 'solid-js';
 
 import { Nav } from './components/Nav.tsx';
+import { StepArrows } from './components/StepArrows.tsx';
 import { ThreeScene } from './components/ThreeScene.tsx';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <>
           <Nav />
           <Suspense>{props.children}</Suspense>
+          <StepArrows />
           <ThreeScene />
         </>
       )}
