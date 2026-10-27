@@ -2,7 +2,7 @@ import { SceneCanvas } from './scene/SceneCanvas.tsx';
 import { SceneDebugPanel } from './scene/SceneDebugPanel.tsx';
 import { SceneHelpers } from './scene/SceneHelpers.tsx';
 import { createSceneSettings } from './scene/sceneSettings.ts';
-import { UserSpheres } from './scene/UserSpheres.tsx';
+import { UserSphereChart } from './scene/UserSphereChart.tsx';
 
 // The persistent 3D chart shown on every level. Each child adds its own objects to the
 // scene and reacts to `settings`, so changing a setting updates the scene automatically.
@@ -11,7 +11,7 @@ export function ThreeScene() {
 
   return (
     <SceneCanvas>
-      <UserSpheres
+      <UserSphereChart
         color={settings.sphereColor}
         columns={settings.columns.slice(0, settings.columnCount)}
         wireframe={settings.wireframe}

@@ -8,7 +8,7 @@ import type { JSX } from 'solid-js';
 
 type Mood = 'angry' | 'happy' | 'neutral';
 
-interface UserSpheresProps {
+interface UserSphereChartProps {
   color: string;
   columns: SceneColumn[];
   wireframe: boolean;
@@ -57,8 +57,8 @@ function UserSphere(props: UserSphereProps): JSX.Element {
   return undefined;
 }
 
-// One emoji sphere per user, stacked in a column per entry in `columns`
-function UserSphereColumn(props: UserSphereColumnProps) {
+// The whole chart: one column of spheres per entry in `columns`, one emoji sphere per user
+function UserSphereChart(props: UserSphereChartProps) {
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(0.25, 16, 16);
   const materials: Record<Mood, THREE.MeshBasicMaterial> = {
@@ -117,4 +117,4 @@ function UserSphereColumn(props: UserSphereColumnProps) {
   );
 }
 
-export { UserSpheres };
+export { UserSphereChart };

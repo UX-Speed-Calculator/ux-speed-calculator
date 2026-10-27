@@ -25,22 +25,23 @@ function SceneCanvas(props: ParentProps) {
 
     const renderer = new THREE.WebGLRenderer({ canvas });
 
-    const resize = () => {
-      const width = globalThis.innerWidth * 0.7;
-      const height = globalThis.innerHeight * 0.5;
-      renderer.setSize(width, height);
+    // CSS sets the canvas's size on the page; match the drawing resolution and camera to it.
+    // `false` stops three.js from overwriting the CSS size with inline styles.
+    const resizeObserver = new ResizeObserver(() => {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
-    };
-    resize();
-    globalThis.addEventListener('resize', resize);
+    });
+    resizeObserver.observe(canvas);
 
     renderer.setAnimationLoop(() => renderer.render(scene, camera));
 
     onCleanup(() => {
       // eslint-disable-next-line unicorn/no-null -- three.js stops the loop when given null
       renderer.setAnimationLoop(null);
-      globalThis.removeEventListener('resize', resize);
+      resizeObserver.disconnect();
       renderer.dispose();
     });
 
