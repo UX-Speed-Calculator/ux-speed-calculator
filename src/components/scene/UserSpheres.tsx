@@ -58,7 +58,7 @@ function UserSphere(props: UserSphereProps): JSX.Element {
 }
 
 // One emoji sphere per user, stacked in a column per entry in `columns`
-function UserSpheres(props: UserSpheresProps) {
+function UserSphereColumn(props: UserSphereColumnProps) {
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(0.25, 16, 16);
   const materials: Record<Mood, THREE.MeshBasicMaterial> = {
