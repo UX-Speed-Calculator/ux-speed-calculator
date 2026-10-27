@@ -7,6 +7,13 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   nitro: {
     preset: 'cloudflare-module',
+    // Levels were previously named steps; keep old /stepN links working
+    routeRules: Object.fromEntries(
+      [2, 3, 4, 5, 6, 7].map((level) => [
+        `/step${level}`,
+        { redirect: { status: 301, to: `/level${level}` } },
+      ]),
+    ),
   },
   plugins: [solidStart({}), nitro(), tailwindcss()],
 });

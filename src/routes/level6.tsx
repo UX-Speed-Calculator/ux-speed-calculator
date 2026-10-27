@@ -4,14 +4,14 @@ import { InputControl } from '../components/InputControl.tsx';
 import { SliderControl } from '../components/SliderControl.tsx';
 import { ToggleControl } from '../components/ToggleControl.tsx';
 
-export default function Step7() {
+export default function Level6() {
   return (
     <main class="mx-auto p-4">
       <section class="info-and-canvas grid grid-cols-4 gap-1">
         <section class="col-span-1 flex flex-col">
-          <h1 class="text-[2rem] uppercase">Level 7</h1>
+          <h1 class="text-[2rem] uppercase">Level 6</h1>
           <section class="mt-5">
-            <h2>Compare Distributions</h2>
+            <h2>Speed Distribution</h2>
             <p>...</p>
           </section>
         </section>
@@ -19,68 +19,60 @@ export default function Step7() {
       </section>
 
       <section class="controls-grid grid grid-cols-3 gap-3 pt-5">
-        <BounceRatePanel />
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
-          title="Controls 2"
+          description="Placeholder controls. Replace with this level's real inputs."
+          title="Controls 1"
         >
           <SliderControl defaultValue={50} label="Sample slider" max={100} min={0} unit="%" />
         </ControlPanel>
+        <BounceRatePanel />
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
+          description="Placeholder controls. Replace with this level's real inputs."
           title="Controls 3"
         >
           <InputControl defaultValue={10} label="Sample number" min={0} />
           <InputControl label="Sample text" placeholder="Enter text" type="text" />
         </ControlPanel>
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
+          description="Placeholder controls. Replace with this level's real inputs."
           title="Controls 4"
         >
           <ToggleControl defaultChecked label="Sample toggle A" />
           <ToggleControl label="Sample toggle B" />
         </ControlPanel>
         <BounceRatePanel />
-        <BounceRatePanel />
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
+          description="Placeholder controls. Replace with this level's real inputs."
+          title="Controls 6"
+        >
+          <SliderControl defaultValue={50} label="Sample slider" max={100} min={0} unit="%" />
+        </ControlPanel>
+        <ControlPanel
+          description="Placeholder controls. Replace with this level's real inputs."
           title="Controls 7"
         >
-          <SliderControl defaultValue={50} label="Sample slider" max={100} min={0} unit="%" />
+          <InputControl defaultValue={10} label="Sample number" min={0} />
+          <InputControl label="Sample text" placeholder="Enter text" type="text" />
         </ControlPanel>
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
+          description="Placeholder controls. Replace with this level's real inputs."
           title="Controls 8"
         >
-          <InputControl defaultValue={10} label="Sample number" min={0} />
-          <InputControl label="Sample text" placeholder="Enter text" type="text" />
-        </ControlPanel>
-        <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
-          title="Controls 9"
-        >
           <ToggleControl defaultChecked label="Sample toggle A" />
           <ToggleControl label="Sample toggle B" />
         </ControlPanel>
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
-          title="Controls 10"
+          description="Placeholder controls. Replace with this level's real inputs."
+          title="Controls 9"
         >
           <SliderControl defaultValue={50} label="Sample slider" max={100} min={0} unit="%" />
         </ControlPanel>
         <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
-          title="Controls 11"
+          description="Placeholder controls. Replace with this level's real inputs."
+          title="Controls 10"
         >
           <InputControl defaultValue={10} label="Sample number" min={0} />
           <InputControl label="Sample text" placeholder="Enter text" type="text" />
-        </ControlPanel>
-        <ControlPanel
-          description="Placeholder controls. Replace with this step's real inputs."
-          title="Controls 12"
-        >
-          <ToggleControl defaultChecked label="Sample toggle A" />
-          <ToggleControl label="Sample toggle B" />
         </ControlPanel>
       </section>
     </main>

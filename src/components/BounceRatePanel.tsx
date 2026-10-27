@@ -1,7 +1,7 @@
 import { ControlPanel } from './ControlPanel.tsx';
 import { SliderControl } from './SliderControl.tsx';
 
-// Bounce rate settings, shared by the steps that expose them
+// Bounce rate settings, shared by the levels that expose them
 function BounceRatePanel() {
   return (
     <ControlPanel description="How bounce rate responds to page speed." title="Bounce Rate">
