@@ -8,7 +8,7 @@ type ControlPanelProps = ParentProps<{
   title: string;
 }>;
 
-// Collapsible panel for the controls section at the bottom of each step. Built on
+// Collapsible panel for the controls section at the bottom of each level. Built on
 // <details>/<summary> so expanding and collapsing works without JavaScript and is
 // keyboard and screen reader accessible out of the box.
 function ControlPanel(props: ControlPanelProps) {

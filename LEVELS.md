@@ -1,6 +1,6 @@
-# Stages
+# Levels
 
-This doc describes mapping from the data model to each of the stages
+This doc describes mapping from the data model to each of the levels
 
 ## 1. Business Formula
 
