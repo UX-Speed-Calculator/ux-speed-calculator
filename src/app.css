@@ -30,6 +30,8 @@ canvas {
   top: 2.5rem;
   right: 0;
   z-index: 1;
+  width: 70vw;
+  height: 50vh;
 }
 
 .future-canvas {
