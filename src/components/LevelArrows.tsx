@@ -1,7 +1,7 @@
 import { A, useLocation } from '@solidjs/router';
 import { createMemo, Show } from 'solid-js';
 
-import { LEVELS } from '../levels.ts';
+import { levelIndex, LEVELS } from '../levels.ts';
 
 const arrowClass =
   'fixed top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full bg-stone-900/80 text-stone-200 shadow-lg hover:bg-stone-700 hover:text-white focus-visible:outline-2 focus-visible:outline-white';
@@ -28,13 +28,7 @@ function Chevron(props: { direction: 'left' | 'right' }) {
 function LevelArrows() {
   const location = useLocation();
 
-  // Index of the current level, or -1 on pages that aren't levels (e.g. About, 404)
-  const currentIndex = createMemo(() => {
-    // Ignore a trailing slash so "/level2/" still matches "/level2"
-    const path = location.pathname.replace(/(.)\/$/, '$1');
-
-    return LEVELS.findIndex((level) => level.href === path);
-  });
+  const currentIndex = createMemo(() => levelIndex(location.pathname));
 
   const previousLevel = () => (currentIndex() > 0 ? LEVELS[currentIndex() - 1] : undefined);
   const nextLevel = () =>

@@ -5,6 +5,9 @@ import type { ParentProps } from 'solid-js';
 
 interface SceneContextValue {
   camera: THREE.PerspectiveCamera;
+  // Draws one frame on the next animation frame. The scene isn't redrawn on its own, so
+  // call this after changing anything visible.
+  requestRender: () => void;
   scene: THREE.Scene;
 }
 
@@ -25,6 +28,16 @@ function SceneCanvas(props: ParentProps) {
 
     const renderer = new THREE.WebGLRenderer({ canvas });
 
+    // Render only when something changes, instead of every frame. Requests made before the
+    // next frame are combined into one render.
+    let pendingFrame: number | undefined;
+    const requestRender = () => {
+      pendingFrame ??= requestAnimationFrame(() => {
+        pendingFrame = undefined;
+        renderer.render(scene, camera);
+      });
+    };
+
     // CSS sets the canvas's size on the page; match the drawing resolution and camera to it.
     // `false` stops three.js from overwriting the CSS size with inline styles.
     const resizeObserver = new ResizeObserver(() => {
@@ -33,19 +46,20 @@ function SceneCanvas(props: ParentProps) {
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
+      // Resizing clears the canvas, so redraw straight away rather than on the next frame
+      renderer.render(scene, camera);
     });
     resizeObserver.observe(canvas);
 
-    renderer.setAnimationLoop(() => renderer.render(scene, camera));
-
     onCleanup(() => {
-      // eslint-disable-next-line unicorn/no-null -- three.js stops the loop when given null
-      renderer.setAnimationLoop(null);
+      if (pendingFrame !== undefined) {
+        cancelAnimationFrame(pendingFrame);
+      }
       resizeObserver.disconnect();
       renderer.dispose();
     });
 
-    setContext({ camera, scene });
+    setContext({ camera, requestRender, scene });
   });
 
   return (
@@ -68,9 +82,13 @@ function useScene() {
 
 // Adds an object to the scene for as long as the calling component is mounted
 function useSceneObject(object: THREE.Object3D) {
-  const { scene } = useScene();
+  const { requestRender, scene } = useScene();
   scene.add(object);
-  onCleanup(() => scene.remove(object));
+  requestRender();
+  onCleanup(() => {
+    scene.remove(object);
+    requestRender();
+  });
 }
 
 export { SceneCanvas, useScene, useSceneObject };

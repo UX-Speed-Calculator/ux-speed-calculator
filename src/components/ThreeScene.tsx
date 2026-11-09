@@ -1,3 +1,4 @@
+import { CameraRig } from './scene/CameraRig.tsx';
 import { SceneCanvas } from './scene/SceneCanvas.tsx';
 import { SceneDebugPanel } from './scene/SceneDebugPanel.tsx';
 import { SceneHelpers } from './scene/SceneHelpers.tsx';
@@ -11,6 +12,7 @@ export function ThreeScene() {
 
   return (
     <SceneCanvas>
+      <CameraRig />
       <UserSphereChart
         color={settings.sphereColor}
         columns={settings.columns.slice(0, settings.columnCount)}
