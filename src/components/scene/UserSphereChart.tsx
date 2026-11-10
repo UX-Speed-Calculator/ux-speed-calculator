@@ -1,7 +1,7 @@
 import { createEffect, createMemo, Index, onCleanup } from 'solid-js';
 import * as THREE from 'three';
 
-import { useSceneObject } from './SceneCanvas.tsx';
+import { useScene, useSceneObject } from './SceneCanvas.tsx';
 
 import type { SceneColumn } from './sceneSettings.ts';
 import type { JSX } from 'solid-js';
@@ -23,8 +23,9 @@ interface UserSphereProps {
 
 const SPACING = 0.5;
 
-function loadEmojiTexture(loader: THREE.TextureLoader, url: string) {
-  const texture = loader.load(url);
+// Textures load in the background, so onLoad redraws the scene once each one arrives
+function loadEmojiTexture(loader: THREE.TextureLoader, url: string, onLoad: () => void) {
+  const texture = loader.load(url, onLoad);
   texture.colorSpace = THREE.SRGBColorSpace;
   // Rotate the face around the sphere so it looks out of the chart
   texture.center.set(0.5, 0.5);
@@ -45,31 +46,37 @@ function moodAt(index: number, total: number): Mood {
 
 // Renders nothing to the DOM; only manages its mesh in the scene
 function UserSphere(props: UserSphereProps): JSX.Element {
+  const { requestRender } = useScene();
   const mesh = new THREE.Mesh();
   useSceneObject(mesh);
 
   createEffect(() => {
     mesh.geometry = props.geometry;
     mesh.material = props.material;
+    requestRender();
   });
-  createEffect(() => mesh.position.set(props.x, props.y, 0));
+  createEffect(() => {
+    mesh.position.set(props.x, props.y, 0);
+    requestRender();
+  });
 
   return undefined;
 }
 
 // The whole chart: one column of spheres per entry in `columns`, one emoji sphere per user
 function UserSphereChart(props: UserSphereChartProps) {
+  const { requestRender } = useScene();
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(0.25, 16, 16);
   const materials: Record<Mood, THREE.MeshBasicMaterial> = {
     angry: new THREE.MeshBasicMaterial({
-      map: loadEmojiTexture(loader, '/angry_emoji_texture.jpg'),
+      map: loadEmojiTexture(loader, '/angry_emoji_texture.jpg', requestRender),
     }),
     happy: new THREE.MeshBasicMaterial({
-      map: loadEmojiTexture(loader, '/happy_emoji_texture.jpg'),
+      map: loadEmojiTexture(loader, '/happy_emoji_texture.jpg', requestRender),
     }),
     neutral: new THREE.MeshBasicMaterial({
-      map: loadEmojiTexture(loader, '/neutral_emoji_texture.jpg'),
+      map: loadEmojiTexture(loader, '/neutral_emoji_texture.jpg', requestRender),
     }),
   };
 
@@ -78,6 +85,7 @@ function UserSphereChart(props: UserSphereChartProps) {
       material.color.set(props.color);
       material.wireframe = props.wireframe;
     }
+    requestRender();
   });
 
   onCleanup(() => {
