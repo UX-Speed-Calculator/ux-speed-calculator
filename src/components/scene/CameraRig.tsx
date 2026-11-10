@@ -10,6 +10,8 @@ import type { JSX } from 'solid-js';
 const MOVE_DURATION_MS = 1_000;
 
 // Starts and stops gently instead of moving at a constant speed
+// The formula was derived from easing examples from https://easings.net/#easeInOutCubic
+// You can check out more of them at that site!
 function easeInOutCubic(progress: number) {
   return progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2;
 }
