@@ -1,12 +1,17 @@
-import { createEffect, createMemo, Index, onCleanup } from 'solid-js';
+import { createEffect, createMemo, For, onCleanup } from 'solid-js';
 import * as THREE from 'three';
 
-import { useScene, useSceneObject } from './SceneCanvas.tsx';
+import { useScene } from './SceneCanvas.tsx';
 
 import type { SceneColumn } from './sceneSettings.ts';
 import type { JSX } from 'solid-js';
 
 type Mood = 'angry' | 'happy' | 'neutral';
+
+interface SpherePosition {
+  x: number;
+  y: number;
+}
 
 interface UserSphereChartProps {
   color: string;
@@ -14,13 +19,13 @@ interface UserSphereChartProps {
   wireframe: boolean;
 }
 
-interface UserSphereProps {
+interface MoodSpheresProps {
   geometry: THREE.BufferGeometry;
   material: THREE.Material;
-  x: number;
-  y: number;
+  positions: SpherePosition[];
 }
 
+const MOODS: Mood[] = ['angry', 'neutral', 'happy'];
 const SPACING = 0.5;
 
 // Textures load in the background, so onLoad redraws the scene once each one arrives
@@ -44,19 +49,45 @@ function moodAt(index: number, total: number): Mood {
   return 'happy';
 }
 
-// Renders nothing to the DOM; only manages its mesh in the scene
-function UserSphere(props: UserSphereProps): JSX.Element {
-  const { requestRender } = useScene();
-  const mesh = new THREE.Mesh();
-  useSceneObject(mesh);
+// Smallest power of two that fits `count`, so capacity grows in a few big steps
+function capacityFor(count: number) {
+  return 2 ** Math.ceil(Math.log2(Math.max(count, 1)));
+}
 
-  createEffect(() => {
-    mesh.geometry = props.geometry;
-    mesh.material = props.material;
-    requestRender();
+// Draws every sphere of one mood with a single instanced mesh: one draw call however many
+// spheres there are. Renders nothing to the DOM; only manages its mesh in the scene.
+function MoodSpheres(props: MoodSpheresProps): JSX.Element {
+  const { requestRender, scene } = useScene();
+
+  // An instanced mesh's capacity is fixed when it's created, so it only grows, and the
+  // mesh is replaced when the spheres no longer fit
+  const capacity = createMemo(
+    (previous: number) => Math.max(previous, capacityFor(props.positions.length)),
+    0,
+  );
+
+  const mesh = createMemo(() => {
+    const instanced = new THREE.InstancedMesh(props.geometry, props.material, capacity());
+    scene.add(instanced);
+    onCleanup(() => {
+      scene.remove(instanced);
+      // Frees the instance data only; the shared geometry and material are left alone
+      instanced.dispose();
+      requestRender();
+    });
+    return instanced;
   });
+
+  const matrix = new THREE.Matrix4();
   createEffect(() => {
-    mesh.position.set(props.x, props.y, 0);
+    const instanced = mesh();
+    for (const [index, position] of props.positions.entries()) {
+      instanced.setMatrixAt(index, matrix.makeTranslation(position.x, position.y, 0));
+    }
+    instanced.count = props.positions.length;
+    instanced.instanceMatrix.needsUpdate = true;
+    // three.js uses this to skip meshes that are off screen, so keep it covering all spheres
+    instanced.computeBoundingSphere();
     requestRender();
   });
 
@@ -96,32 +127,31 @@ function UserSphereChart(props: UserSphereChartProps) {
     }
   });
 
-  const spheres = createMemo(() => {
+  // Every sphere's position, grouped by mood
+  const positionsByMood = createMemo(() => {
     const positions = props.columns.flatMap((column, columnIndex) =>
       Array.from({ length: column.numUsers }, (_, row) => ({
         x: columnIndex * SPACING,
         y: row * SPACING,
       })),
     );
-    return positions.map((position, index) => ({
-      ...position,
-      mood: moodAt(index, positions.length),
-    }));
+    const groups: Record<Mood, SpherePosition[]> = { angry: [], happy: [], neutral: [] };
+    for (const [index, position] of positions.entries()) {
+      groups[moodAt(index, positions.length)].push(position);
+    }
+    return groups;
   });
 
-  // <Index> keeps each sphere's mesh and only updates its position and material, instead
-  // of rebuilding every mesh whenever a column changes
   return (
-    <Index each={spheres()}>
-      {(sphere) => (
-        <UserSphere
+    <For each={MOODS}>
+      {(mood) => (
+        <MoodSpheres
           geometry={geometry}
-          material={materials[sphere().mood]}
-          x={sphere().x}
-          y={sphere().y}
+          material={materials[mood]}
+          positions={positionsByMood()[mood]}
         />
       )}
-    </Index>
+    </For>
   );
 }
 
