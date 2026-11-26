@@ -27,6 +27,11 @@ function SceneDebugPanel(props: SceneDebugPanelProps): JSX.Element {
     materialsFolder.addColor(props.settings, 'sphereColor').name('Sphere Color');
     materialsFolder.add(props.settings, 'wireframe');
 
+    const qualityFolder = gui.addFolder('Quality');
+    qualityFolder.add(props.settings, 'maxPixelRatio', 0.5, 3, 0.25).name('Max Pixel Ratio');
+    // Shown for reference only: it can't change after load, so it's set in the URL instead
+    qualityFolder.add(props.settings, 'antialias').name('Antialias (?antialias=off)').disable();
+
     const columnsFolder = gui.addFolder('Columns');
     columnsFolder.add(props.settings, 'columnCount', 1, 50, 1).name('Number of Columns');
 

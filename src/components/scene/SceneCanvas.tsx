@@ -1,4 +1,12 @@
-import { createContext, createSignal, onCleanup, onMount, Show, useContext } from 'solid-js';
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+  Show,
+  useContext,
+} from 'solid-js';
 import * as THREE from 'three';
 
 import type { ParentProps } from 'solid-js';
@@ -11,12 +19,18 @@ interface SceneContextValue {
   scene: THREE.Scene;
 }
 
+interface SceneCanvasProps extends ParentProps {
+  // Read once when the canvas is created; changing it later has no effect
+  antialias: boolean;
+  maxPixelRatio: number;
+}
+
 const SceneContext = createContext<SceneContextValue>();
 
 // Owns the renderer, scene and camera, and provides them to the scene components passed
 // as children. Children only render in the browser, after the canvas exists, because
 // WebGL and texture loading need the DOM.
-function SceneCanvas(props: ParentProps) {
+function SceneCanvas(props: SceneCanvasProps) {
   let canvas!: HTMLCanvasElement;
   const [context, setContext] = createSignal<SceneContextValue>();
 
@@ -26,7 +40,7 @@ function SceneCanvas(props: ParentProps) {
     camera.position.set(0, 2, 3);
     scene.add(camera);
 
-    const renderer = new THREE.WebGLRenderer({ canvas });
+    const renderer = new THREE.WebGLRenderer({ antialias: props.antialias, canvas });
 
     // Render only when something changes, instead of every frame. Requests made before the
     // next frame are combined into one render.
@@ -51,11 +65,31 @@ function SceneCanvas(props: ParentProps) {
     });
     resizeObserver.observe(canvas);
 
+    // The screen's pixel ratio changes when the window moves to a screen with a different
+    // density, or the page is zoomed. A media query for the current ratio only reports one
+    // change, so it's replaced with a query for the new ratio each time.
+    const [devicePixelRatio, setDevicePixelRatio] = createSignal(globalThis.devicePixelRatio);
+    let resolutionQuery: MediaQueryList | undefined;
+    const watchPixelRatio = () => {
+      resolutionQuery?.removeEventListener('change', watchPixelRatio);
+      setDevicePixelRatio(globalThis.devicePixelRatio);
+      resolutionQuery = globalThis.matchMedia(`(resolution: ${globalThis.devicePixelRatio}dppx)`);
+      resolutionQuery.addEventListener('change', watchPixelRatio);
+    };
+    watchPixelRatio();
+
+    createEffect(() => {
+      renderer.setPixelRatio(Math.min(devicePixelRatio(), props.maxPixelRatio));
+      // Changing the pixel ratio resizes and clears the canvas, so redraw straight away
+      renderer.render(scene, camera);
+    });
+
     onCleanup(() => {
       if (pendingFrame !== undefined) {
         cancelAnimationFrame(pendingFrame);
       }
       resizeObserver.disconnect();
+      resolutionQuery?.removeEventListener('change', watchPixelRatio);
       renderer.dispose();
     });
 
