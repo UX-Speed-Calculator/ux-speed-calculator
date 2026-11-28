@@ -11,7 +11,7 @@ export function ThreeScene() {
   const settings = createSceneSettings();
 
   return (
-    <SceneCanvas>
+    <SceneCanvas antialias={settings.antialias} maxPixelRatio={settings.maxPixelRatio}>
       <CameraRig />
       <UserSphereChart
         color={settings.sphereColor}
